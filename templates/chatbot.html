@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 300px;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .chat-header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .chat-body {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .chat-input {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    .user-input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+
+    .send-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">SHANKS</div>
+  <div class="chat-body" id="chatBody">
+    <p>SHANKS: Hi! How can I help you today?</p>
+  </div>
+  <div class="chat-input">
+    <input type="text" class="user-input" id="userInput" placeholder="Type your message...">
+    <button class="send-button" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function sendMessage() {
+    const userInput = document.getElementById('userInput').value;
+    const chatBody = document.getElementById('chatBody');
+    
+    if (userInput.trim() !== '') {
+      const userMessage = document.createElement('p');
+      userMessage.textContent = `You: ${userInput}`;
+      chatBody.appendChild(userMessage);
+
+      // Generate chatbot response
+      const botResponse = getChatbotResponse(userInput);
+
+      // Speak the chatbot response using Web Speech API
+      const synth = window.speechSynthesis;
+      const botMessage = new SpeechSynthesisUtterance(`Chatbot: ${botResponse}`);
+      synth.speak(botMessage);
+
+      // Display the chatbot response in the chat
+      const chatbotMessage = document.createElement('p');
+      chatbotMessage.textContent = `Chatbot: ${botResponse}`;
+      chatBody.appendChild(chatbotMessage);
+
+      document.getElementById('userInput').value = '';
+      chatBody.scrollTop = chatBody.scrollHeight; // Scroll to the bottom
+    }
+  }
+
+  // Simple function to generate chatbot responses
+  function getChatbotResponse(userInput) {
+    // Add your own logic to generate more sophisticated responses based on user input
+    return 'Thanks for your message!';
+  }
+</script>
+
+</body>
+</html>
+

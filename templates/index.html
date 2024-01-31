@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<title>Cyber Crime Management System</title>
+<link rel="icon" href="https://cdn.pixabay.com/photo/2019/06/23/05/32/deer-head-4292868_1280.png" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../static/styles/style.css">
+<link rel="stylesheet" href="../static/styles/aj.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/styles/login.css">
+<link rel="stylesheet" href="../static/styles/python.css">
+
+
+<body>
+  <div id="loginpage" style="display: block;">
+    <section>
+      <div class="form-box">
+        <div class="form-value">
+          <form action="">
+            <h2>Login</h2>
+            <div class="inputbox">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="email" id="email">
+              <label for="Email"></label>
+            </div>
+            <div class="inputbox">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <input type="password" id="pwd">
+              <label for="Password"></label>
+            </div>
+            <div class="forget">
+              <label for=""><input type="checkbox">Remember Me</label>
+              <a href="">Forget Password</a>
+            </div>
+            <button type="submit" onclick="login()">Log in</button>
+            <div class="register">
+              <p>Don't have a account ?
+              <div class="a">Register</div>
+              </p>
+            </div>
+          </form>
+        </div>
+    </section>
+  </div>
+
+  <!-- First Parallax Image with Logo Text -->
+  <div id="homepage" style="display: none;">
+    <div class="bgimg aj-display-container aj-opacity-min" id="home">
+      <div class="aj-display-middle" style="white-space:nowrap;">
+        <span class="aj-center aj-padding-large aj-black aj-xlarge aj-wide aj-animate-opacity">Cyber-Crime<span
+            class="aj-hide-small"> Reporting and Managing</span> System</span>
+      </div>
+    </div>
+    <br><br><br>
+    <div class="container">
+      <h1>Criminal Database</h1>
+
+      <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Upload Image:</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
+        <br>
+        <label for="name">Person's Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="crime">Crime:</label>
+        <input type="text" id="crime" name="crime" required>
+        <br>
+        <button type="button" onclick="uploadData()">Upload Data</button>
+      </form>
+
+      <hr>
+
+      <h2>Criminal Identification</h2>
+      <label for="retrieveFile">Choose an Image:</label>
+      <input type="file" id="retrieveFile" name="retrieveFile" accept="image/*" onchange="previewImage()">
+      <br>
+      <img id="previewImage" alt="Image Preview">
+      <br>
+      <button id="retrievebutton" type="button" onclick="retrieveData()">Retrieve Data</button>
+      <p id="retrievedData"></p>
+    </div>
+
+    <!-- Container (About Section) -->
+    <div class="aj-content aj-container aj-padding-64" id="options">
+      <h3 class="aj-center">OPTIONS</h3>
+      <a href="formcc.html"><button id="btn1">Reporting</button></a>
+      <a href="chatbot.html"><button id="btn1">Shanks the Chatbot</button></a>
+      <a href="creater.html"><button id="btn1">Meet the creater</button></a>
+    </div>
+
+    <!-- Container (About Section) -->
+    <div class="aj-content aj-container aj-padding-64" id="about">
+      <h3 class="aj-center">ABOUT THE PROJECT</h3>
+      <p class="aj-center"><em>ML and AI Project</em></p>
+      <p>The Cyber Crime Reporting and Management System is a project designed to enhance the process of reporting and
+        managing cyber crimes. The system incorporates a speaking chatbot for handling user queries, a dedicated button
+        for reporting cyber crimes, and a feature for searching criminals using photographs. The project utilizes Python
+        libraries for machine learning tasks and incorporates HTML, CSS, and JavaScript for frontend development.</p>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="aj-center aj-black aj-padding-64 aj-opacity aj-hover-opacity-off">
+      <a href="#home" class="aj-button aj-light-grey"><i class="fa fa-arrow-up aj-margin-right"></i>To the top</a>
+    </footer>
+  </div>
+  <script>
+    function uploadData() {
+      const formData = new FormData(document.getElementById('uploadForm'));
+
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+        });
+    }
+
+    function previewImage() {
+      const preview = document.getElementById('previewImage');
+      const fileInput = document.getElementById('retrieveFile');
+
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function retrieveData() {
+      const imageElement = document.getElementById('previewImage');
+      const retrievedDataElement = document.getElementById('retrievedData');
+      const fileInput = document.getElementById('retrieveFile');
+
+      const file = fileInput.files[0];
+      if (!file) {
+        alert('Please choose an image for retrieval.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('imageUrl', file.name);
+
+      fetch('/retrieve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageUrl: file.name }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          retrievedDataElement.textContent = data.message;
+        });
+    }
+  </script>
+  <script>
+    // Modal Image Gallery
+    function onClick(element) {
+      document.getElementById("img01").src = element.src;
+      document.getElementById("modal01").style.display = "block";
+      var captionText = document.getElementById("caption");
+      captionText.innerHTML = element.alt;
+    }
+
+  </script>
+  <script>
+    function gotoform() {
+      window.location.href = "formcc.html";
+
+      document.getElementById("btn2").addEventListener("click", gotoform)
+
+    }
+  </script>
+  <script>
+    const loginForm = document.getElementById('loginpage');
+    const homepageDiv = document.getElementById('homepage');
+
+    function login() {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("pwd").value;
+
+      if (email == "shashank" && password == "admin") {
+        alert("Login Successfull");
+        loginForm.style.display = 'none';
+        homepageDiv.style.display = 'block';
+      }
+      else {
+        alert("Invalid Information..!!!!!");
+        return;
+      }
+    }
+  </script>
+</body>
+
+</html>

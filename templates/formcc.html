@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/formstyle.css">
+    <title>Cybercrime Reporting</title>
+</head>
+<body>
+    <header>
+        <h1>Cybercrime Reporting</h1>
+    </header>
+    <main>
+        <section id="crimeForm">
+            <h2>Report Cybercrime</h2>
+            <form id="cybercrime-form">
+                
+                <label for="type">Type of Cybercrime:</label>
+                <input type="text" id="type" name="type" required>
+
+                <label for="type">Aadhar card:</label>
+                <input type="text" id="aadhar" name="type" required>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+
+                <button type="submit">Submit Report</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+    <script src="../ccform.js"></script>
+</body>
+</html>
